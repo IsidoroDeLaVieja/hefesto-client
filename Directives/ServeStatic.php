@@ -1,8 +1,8 @@
 <?php /*dlv-code-engine***/
 
 $root = ( isset($config['storage']) && $config['storage'] === true ) 
-    ? 'path-storage'
-    : 'path-code';
+    ? 'hefesto-pathstorage'
+    : 'hefesto-pathcode';
 
 $path = isset($config['path']) 
     ? $config['path']

@@ -1,7 +1,7 @@
 <?php /*dlv-code-engine***/
 
 $data = isset($config['data']) ? $config['data'] : [];
-$file = $state->memory()->get('path-code').'Assets/views/'.$config['name'].'.blade.php';
+$file = $state->memory()->get('hefesto-pathcode').'Assets/views/'.$config['name'].'.blade.php';
 $html = view()->file(
     $file,
     $data
