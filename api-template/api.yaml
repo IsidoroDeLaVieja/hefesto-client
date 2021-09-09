@@ -1,0 +1,19 @@
+key: #api-name#
+before:
+  CacheDisabled:
+    directive: CacheDisabled
+  PropagateCorrelationId:
+    directive: PropagateCorrelationId
+after: 
+  OnError:
+    directive: OnError
+    groups:
+      - ERROR_FLOW
+  Log:
+    directive: Log
+    groups:
+      - AFTER_FLOW
+endpoints:
+  get /ping:
+    Ping:
+      directive: Ping
