@@ -11,7 +11,7 @@ ModifyMessage::run($state,[
     'verb' => $verb,
     'path' => $config['path'],
     'headers' => isset($config['headers']) ?$config['headers'] : ['Content-Type' => 'application/json'] ,
-    'queryParams' => isset($config['queryParams']) ?$config['queryParams'] : null,
+    'queryParams' => isset($config['queryParams']) ?$config['queryParams'] : [],
     'body' => $body
 ]);
 
