@@ -11,6 +11,7 @@ if ($state->memory()->get('correlationId')) {
 
 if ($config['host'] === $state->memory()->get('hefesto-localhost') ) {
     $message->setHeader('public-host',$state->memory()->get('hefesto-org'));
+    $message->deleteHeader('Host');
 }
 
 $target = $config['host'].$message->getPath().$message->getQueryParamAsString();
