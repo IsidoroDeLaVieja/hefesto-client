@@ -20,6 +20,7 @@ foreach ($data as $key => $value) {
 }
 $data['jsStaticFile'] = $state->memory()->get('jsStaticFile');
 $data['cssStaticFile'] = $state->memory()->get('cssStaticFile');
+$data['staticBasePath'] = $staticBasePath;
 
 $html = view()->file(
     $file,
