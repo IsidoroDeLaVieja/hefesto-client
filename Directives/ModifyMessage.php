@@ -17,7 +17,7 @@ if (isset($config['headers']))
 {
     $state->message()->deleteHeaders();
     foreach ($config['headers'] as $key => $value) {
-        $state->message()->setHeader($key,$state->alias($value));
+        $state->message()->setHeader($key,(string)$state->alias($value));
     }
 }
 
@@ -25,7 +25,7 @@ if (isset($config['queryParams']) && !$queryParamsInPath)
 {
     $state->message()->deleteQueryParams();
     foreach ($config['queryParams'] as $key => $value) {
-        $state->message()->setQueryParam($key,$state->alias($value));
+        $state->message()->setQueryParam($key,(string)$state->alias($value));
     }
 }
 
