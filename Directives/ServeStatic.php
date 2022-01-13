@@ -13,7 +13,7 @@ $path = $state->memory()->get($root).$path.'/'.$config['file'];
 if ( ! file_exists($path) ) {
     $state->memory()->set('error.status',404);
     $state->memory()->set('error.message', 'Resource not found');
-    throw new \Exception('File '.$path.'/'.$config['file'].' not found');
+    throw new \Exception('File '.$path.' not found');
 }
 
 $state->message()->setBody(file_get_contents(
