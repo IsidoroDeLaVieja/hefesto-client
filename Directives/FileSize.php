@@ -2,11 +2,11 @@
 
 $state->memory()->set($config['target'],null);
 try {
-    $content = file_get_contents(
+    $size = filesize(
         $state->memory()->get('hefesto-pathstorage').$config['name']
     );
-    if ($content !== false) {
-        $state->memory()->set($config['target'],json_decode($content,true));
+    if ($size !== false) {
+        $state->memory()->set($config['target'],$size);
     }
 } catch (\Throwable $e) {
 
