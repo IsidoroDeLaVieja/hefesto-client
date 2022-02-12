@@ -9,6 +9,7 @@ if (!isset($config['period']) || $config['period'] !== 'day') {
 $ip = $_SERVER['REMOTE_ADDR'];
 $key = $ip . ':' . $config['key'] . ':' . $config['period'];
 
+$state->memory()->set( 'quota' , null );
 RedisGet::run($state,[
     'key' => $key,
     'target' => 'quota'
