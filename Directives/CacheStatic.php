@@ -4,7 +4,9 @@ $contentTypesToCache = [
     'application/javascript',
     'text/css',
     'image/',
-    'audio/'
+    'audio/',
+    'font/ttf',
+    'image/vnd.microsoft.icon'
 ];
 
 $expires = isset($config['expirationMinutes']) ? $config['expirationMinutes'] : 5;
