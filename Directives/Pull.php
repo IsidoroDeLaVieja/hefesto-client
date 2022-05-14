@@ -49,7 +49,7 @@ if ( ($verify || $verifyModel) && $state->message()->getStatus() < 299 ) {
     LoadAndValidateModel::run($state,[
         'source' => $state->message()->getBodyAsArray(),
         'target' => $config['target'],
-        'server-side-error' => true
+        'server-side-error' => isset($config['serverSideError']) ? $config['serverSideError'] : true
     ]);
 }
 
