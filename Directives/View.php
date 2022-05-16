@@ -3,8 +3,13 @@
 $data = isset($config['data']) ? $config['data'] : [];
 
 $staticBasePath = isset($config['staticBasePath']) ? $config['staticBasePath'] : '/';
+
+$js = isset($config['js']) ? $config['js'] : [];
+foreach ($js as $key => $value) {
+    $js[$key] = $state->alias($value);
+}
 StaticNameGenerator::run($state,[
-    'files' => isset($config['js']) ? $config['js'] : [],
+    'files' => $js,
     'type' => 'js',
     'staticBasePath' => $staticBasePath
 ]);
