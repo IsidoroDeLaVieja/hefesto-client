@@ -19,6 +19,11 @@ $filesPath = $state->memory()->get('hefesto-pathcode')
 $compiled = '';
 $files = explode(',',$files);
 foreach($files as $file) {
+    if (!file_exists($filesPath.$file.'.'.$config['extension'])) {
+        $state->memory()->set('error.status', 404);
+        $state->memory()->set('error.message', 'Not Found');
+        throw new \Exception();
+    }
     $compiled .= file_get_contents($filesPath.$file.'.'.$config['extension'])."\n";
 }
 
