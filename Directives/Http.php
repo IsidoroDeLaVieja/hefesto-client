@@ -1,6 +1,7 @@
 <?php /*dlv-code-engine***/
 
-//https://github.com/laravel/framework/blob/8.x/src/Illuminate/Http/Client/PendingRequest.php
+$timeout = $config['timeout'] ?? 600;
+$connectTimeout = $config['connectTimeout'] ?? 600;
 
 $message = $state->message();
 
@@ -18,7 +19,7 @@ $target = $config['host'].$message->getPath().$message->getQueryParamAsString();
 
 $state->memory()->set('last-http-request',$message->getVerb().' '.$target);
 
-$response = \Illuminate\Support\Facades\Http::withHeaders($message->getHeaders())->withOptions([
+$response = \Illuminate\Support\Facades\Http::timeout($timeout)->connectTimeout($connectTimeout)->withHeaders($message->getHeaders())->withOptions([
     'allow_redirects' => false
 ])->send($message->getVerb(),$target,[
     'body' => $message->getBody()
