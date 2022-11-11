@@ -1,7 +1,7 @@
 <?php /*dlv-code-engine***/
 
-$timeout = $config['timeout'] ?? 600;
-$connectTimeout = $config['connectTimeout'] ?? 600;
+$timeout = $config['timeout'] ?? 10;
+$connectTimeout = $config['connectTimeout'] ?? 10;
 
 $message = $state->message();
 

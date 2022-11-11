@@ -34,7 +34,9 @@ if (isset($config['cache'])) {
 }
 
 Http::run($state,[
-    'host' => $config['host']
+    'host' => $config['host'],
+    'timeout' => $config['timeout'] ?? 10,
+    'connectTimeout' => $config['connectTimeout'] ?? 10
 ]);
 
 $verify = !isset($config['verify']) || $config['verify'] === true;
