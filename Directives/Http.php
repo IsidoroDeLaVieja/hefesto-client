@@ -11,8 +11,14 @@ if ($state->memory()->get('correlationId')) {
 }
 
 if ($config['host'] === $state->memory()->get('hefesto-localhost') ) {
-    $message->setHeader('public-host',$state->memory()->get('hefesto-org'));
-    $message->deleteHeader('Host');
+    LocalCall::run($state,[
+        'method' => $message->getVerb(),
+        'path' => $message->getPath(),
+        'headers' => $message->getHeaders() ,
+        'queryParams' => $message->getQueryParams(),
+        'body' => $message->getBody()
+    ]);
+    return;
 }
 
 $target = $config['host'].$message->getPath().$message->getQueryParamAsString();
@@ -25,31 +31,12 @@ $response = \Illuminate\Support\Facades\Http::timeout($timeout)->connectTimeout(
     'body' => $message->getBody()
 ]);
 
-
 $message->deleteHeaders();
 $headers = $response->headers();
-
 $headers = array_change_key_case($headers);
-
-if ( isset($headers['set-cookie']) ) {
-    $state->memory()->set('dlv-cookies',$response->cookies());
-    if (isset($config['cookiesDomain'])) {
-        $state->memory()->set('dlv-cookies-domain',$config['cookiesDomain']);
-    }
-    unset($headers['set-cookie']);
-}
-
-if (isset($headers['public-host'])) {
-    unset($headers['public-host']);
-}
-
-if (isset($headers['public-host-key'])) {
-    unset($headers['public-host-key']);
-}
 
 foreach ($headers as $key => $allValues) {
     $message->setHeader($key,implode('; ',$allValues));
 }
-
 $message->setBody($response->body());
 $message->setStatus($response->status());
