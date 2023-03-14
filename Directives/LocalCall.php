@@ -61,6 +61,7 @@ $remoteState = new \App\Core\State($message,[
     'definitionVerb' => $pathInfo['DEFINITION_VERB'],
     'definitionPath' => $pathInfo['DEFINITION_PATH']
 ]);
+$remoteState->memory()->set('hefestoLocalCall',true);
 
 $engine = new \App\Core\Engine(
     $remoteState,
