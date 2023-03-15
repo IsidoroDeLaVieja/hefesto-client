@@ -1,6 +1,6 @@
 <?php /*dlv-code-engine***/
 
-ini_set('memory_limit', '256M');//double memory (two requests, origin and local call)
+SetMemory::run($state,['memory' => 256]);//double memory (two requests, origin and local call)
 
 $state->memory()->set('local-call-response',null);
 
@@ -96,4 +96,4 @@ $engine = null;
 
 gc_collect_cycles();
 
-ini_set('memory_limit', '128M');//memory limit reset
+SetMemory::run($state,['memory' => 128]);//memory limit reset
