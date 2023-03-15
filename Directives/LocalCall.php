@@ -1,5 +1,7 @@
 <?php /*dlv-code-engine***/
 
+ini_set('memory_limit', '256M');//double memory (two requests, origin and local call)
+
 $state->memory()->set('local-call-response',null);
 
 $apiStorage = \Illuminate\Support\Facades\App::make(\App\Core\ApiStorage::class);
@@ -80,3 +82,18 @@ foreach ($message->getHeaders() as $key => $value) {
     $state->message()->setHeader($key,$value);
 }
 $state->message()->setBody($message->getBody());
+
+$apiStorage = null;//memory cleanup
+$pathInterpreter = null;
+$apiMemoryFactory = null;
+$engineDispatcher = null;
+$api = null;
+$apiCode = null;
+$pathInfo = null;
+$message = null;
+$remoteState = null;
+$engine = null;
+
+gc_collect_cycles();
+
+ini_set('memory_limit', '128M');//memory limit reset
