@@ -10,6 +10,9 @@ if ($state->memory()->get('correlationId')) {
     $message->setHeader('X-Correlation-Id',$state->memory()->get('correlationId'));
 }
 
+$target = $config['host'].$message->getPath().$message->getQueryParamAsString();
+$state->memory()->set('last-http-request',$message->getVerb().' '.$target);
+
 if ($config['host'] === $state->memory()->get('hefesto-localhost') ) {
     LocalCall::run($state,[
         'method' => $message->getVerb(),
@@ -20,10 +23,6 @@ if ($config['host'] === $state->memory()->get('hefesto-localhost') ) {
     ]);
     return;
 }
-
-$target = $config['host'].$message->getPath().$message->getQueryParamAsString();
-
-$state->memory()->set('last-http-request',$message->getVerb().' '.$target);
 
 $response = \Illuminate\Support\Facades\Http::timeout($timeout)->connectTimeout($connectTimeout)->withHeaders($message->getHeaders())->withOptions([
     'allow_redirects' => false
