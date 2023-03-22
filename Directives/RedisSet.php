@@ -7,9 +7,10 @@ DatabaseName::run($state,[
 ]);
 $dbName = $state->memory()->get('db-name');
 
+$value = is_array($config['value']) ? json_encode($config['value']) : null;
 \Illuminate\Support\Facades\Redis::set(
     $dbName.':'.$config['key'],
-    json_encode($config['value']),
+    $value,
     'EX', 
     $expire
 );

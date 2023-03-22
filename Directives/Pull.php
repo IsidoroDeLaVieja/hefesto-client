@@ -17,7 +17,10 @@ ModifyMessage::run($state,[
 ]);
 
 if (isset($config['cache'])) {
-    $keyCache = 'pull:cache:'.md5($config['host'].serialize($state->message()));
+    $keyCache = 'pull:cache:'.md5($config['host'].serialize(
+        $state->message()->getVerb().$state->message()->getPath().serialize($state->message()->getHeaders()).serialize($state->message()->getQueryParams()).$state->message()->getBody()
+    ));
+
     $state->memory()->set('pullCache',null);
     RedisGet::run($state,[
         'key' => $keyCache,
