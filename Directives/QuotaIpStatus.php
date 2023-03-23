@@ -6,7 +6,8 @@ if (!isset($config['period']) || $config['period'] !== 'day') {
     throw new \Exception('Quota Error');
 }
 
-$ip = $_SERVER['REMOTE_ADDR'];
+CalculateIp::run($state,[]);
+$ip = $state->memory()->get('ip');
 $key = $ip . ':' . $config['key'] . ':' . $config['period'];
 
 $state->memory()->set( 'quota' , null );
