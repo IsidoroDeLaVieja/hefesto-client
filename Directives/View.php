@@ -1,6 +1,7 @@
 <?php /*dlv-code-engine***/
 
 $data = isset($config['data']) ? $config['data'] : [];
+$fragments = isset($config['fragments']) ? $config['fragments'] : [];
 
 $staticBasePath = isset($config['staticBasePath']) ? $config['staticBasePath'] : '/';
 
@@ -26,6 +27,13 @@ foreach ($data as $key => $value) {
 $data['jsStaticFile'] = $state->memory()->get('jsStaticFile');
 $data['cssStaticFile'] = $state->memory()->get('cssStaticFile');
 $data['staticBasePath'] = $staticBasePath;
+
+foreach ($fragments as $fragment) {
+    $data[$fragment] = view()->file(
+        $state->memory()->get('hefesto-pathcode').'Assets/views/fragments/'.$fragment.'.blade.php',
+        $data
+    )->render();
+}
 
 $html = view()->file(
     $file,
