@@ -27,7 +27,10 @@ foreach($files as $file) {
     $compiled .= file_get_contents($filesPath.$file.'.'.$config['extension'])."\n";
 }
 
+$compiled = gzencode($compiled);
+
 $state->message()->setHeader('Content-Type',$config['type']);
+$state->message()->setHeader('Content-Encoding','gzip');
 $state->message()->setBody($compiled);
 
 CacheUrl::run($state,[
