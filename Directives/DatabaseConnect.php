@@ -2,7 +2,7 @@
 
 DatabaseName::run($state,[]);
 
-$host = 'hefesto_postgres_1';
+$host = 'hefesto-postgres-1';
 $db = isset($config['root']) && $config['root'] === true
 	? 'postgres'
 	: $state->memory()->get('db-name');
