@@ -4,6 +4,7 @@ $dayTotal = $config['dayTotal'] ?? null;
 $minuteTotal = $config['minuteTotal'] ?? null;
 $dayIp = $config['dayIp'] ?? null;
 $minuteIp = $config['minuteIp'] ?? null;
+$path = $config['path'] ?? $state->message()->getPath();
 
 if ($dayTotal === null && $minuteTotal === null && $dayIp === null && $minuteIp === null) {
     return;
@@ -11,7 +12,6 @@ if ($dayTotal === null && $minuteTotal === null && $dayIp === null && $minuteIp 
 
 CalculateIp::run($state, []);
 $ip = $state->memory()->get('ip');
-$path = $state->message()->getPath();
 
 $apiKey = $state->memory()->get('hefesto-api');
 
