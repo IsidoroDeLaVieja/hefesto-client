@@ -1,24 +1,47 @@
 #!/bin/bash
-set -e
 
-if [ $# -eq 0 ]
-  then
-    echo "The format is create-api.sh API"
-    exit
+set -euo pipefail
+
+usage() {
+    echo "Error: Missing API name."
+    echo "Usage: create-api.sh API_NAME"
+    exit 1
+}
+
+if [ $# -eq 0 ]; then
+    usage
 fi
 
+API_NAME="$1"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-if [ -f $SCRIPT_DIR/.env ]
-then
-  export $(cat $SCRIPT_DIR/.env | sed 's/#.*//g' | xargs)
+TEMPLATE_DIR="$SCRIPT_DIR/api-template"
+API_TARGET="$PWD/$API_NAME"
+
+echo "==> Creating API: $API_NAME..."
+
+if [ ! -d "$TEMPLATE_DIR" ]; then
+    echo "Error: Template directory not found at $TEMPLATE_DIR"
+    exit 1
 fi
 
-API_NAME=$1
+if [ -d "$API_TARGET" ]; then
+    echo "Warning: Directory '$API_TARGET' already exists."
+    read -p "Do you want to overwrite it? (y/N): " response
+    if [[ ! "$response" =~ ^[yY]$ ]]; then
+        echo "Operation cancelled by user."
+        exit 0
+    fi
+fi
 
-API_TARGET="$APIS_PATH"$API_NAME
+echo "--> Copying template..."
+mkdir -p "$API_TARGET"
+cp -R "$TEMPLATE_DIR"/* "$API_TARGET"
 
-mkdir -p $API_TARGET
-cp -R "$SCRIPT_DIR"/api-template/* $API_TARGET
-sed -i "s/#api-name#/$API_NAME/g" "$API_TARGET"/api.yaml
+YAML_FILE="$API_TARGET/api.yaml"
+if [ -f "$YAML_FILE" ]; then
+    sed -i "s|#api-name#|$API_NAME|g" "$YAML_FILE"
+else
+    echo "Notice: api.yaml not found. Placeholder replacement skipped."
+fi
 
-echo "api created: "$API_TARGET
+echo "Success: API created at $API_TARGET"
