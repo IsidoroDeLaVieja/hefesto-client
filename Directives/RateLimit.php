@@ -35,7 +35,7 @@ $getMinuteIpKey = function($apiKey, $path, $ip) {
     return "quota:minute:ip:{$apiKey}:{$path}:{$ip}:" . date('YmdHi');
 };
 
-$check = function($key, $limit) use ($redis, &$exceeded) {
+$check = function($key, $limit, $reason) use ($redis, &$exceeded, &$exceededReason) {
     if ($exceeded || $limit === null) return;
     $current = $redis->incr($key);
     if ($current === 1) {
@@ -44,17 +44,19 @@ $check = function($key, $limit) use ($redis, &$exceeded) {
     }
     if ($current > $limit) {
         $exceeded = true;
+        $exceededReason = $reason;
     }
 };
 
 $exceeded = false;
-$check($getDayTotalKey($apiKey, $path), $dayTotal);
-$check($getMinuteTotalKey($apiKey, $path), $minuteTotal);
-$check($getDayIpKey($apiKey, $path, $ip), $dayIp);
-$check($getMinuteIpKey($apiKey, $path, $ip), $minuteIp);
+$exceededReason = null;
+$check($getDayTotalKey($apiKey, $path), $dayTotal, 'dayTotal');
+$check($getMinuteTotalKey($apiKey, $path), $minuteTotal, 'minuteTotal');
+$check($getDayIpKey($apiKey, $path, $ip), $dayIp, 'dayIp');
+$check($getMinuteIpKey($apiKey, $path, $ip), $minuteIp, 'minuteIp');
 
 if ($exceeded) {
     $state->memory()->set('error.status', '429');
     $state->memory()->set('error.message', 'Too Many Requests');
-    throw new \Exception();
+    throw new \Exception("Exceeded by {$exceededReason}");
 }
