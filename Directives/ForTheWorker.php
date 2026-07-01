@@ -9,7 +9,7 @@ if (isset($config['identifier']) && $config['identifier'] === true) {
     $data = ['message' => 'queued','id' => $state->id()];
     
     WriteToJob::run($state,[
-        'value' => json_encode($data)
+        'value' => $data
     ]);
 
     ModifyMessage::run($state,[
